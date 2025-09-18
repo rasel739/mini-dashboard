@@ -2,12 +2,12 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useContext, useState } from 'react';
-import { SideBarContext } from '@/context/sidebar-context';
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { GlobalContext } from '@/lib/global-provider';
 
 const Header = () => {
-  const { sideBarOpen, setSideBarOpen } = useContext(SideBarContext);
+  const { sideBarOpen, setSideBarOpen } = useContext(GlobalContext);
   const [dropdownOpen, setDropDownOpen] = useState<boolean>(false);
   const { data: user } = useSession();
 
@@ -66,6 +66,14 @@ const Header = () => {
               dropdownOpen ? 'block' : 'hidden'
             } top-16 right-5 z-10 min-w-[160px]  rounded-lg border border-slate-200 bg-white p-1.5  focus:outline-none`}
           >
+            <Link href='/profile' className='cursor-pointer'>
+              <li
+                role='menuitem'
+                className='cursor-pointer text-slate-900 flex w-full text-sm items-center rounded-md p-3 transition-all hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100'
+              >
+                {'🪪'} Profile
+              </li>
+            </Link>
             <Link href='/login' onClick={() => signOut()} className='cursor-pointer'>
               <li
                 role='menuitem'
