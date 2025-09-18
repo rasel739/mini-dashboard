@@ -1,0 +1,84 @@
+'use client';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { useContext, useState } from 'react';
+import { SideBarContext } from '@/context/sidebar-context';
+import { signOut, useSession } from 'next-auth/react';
+import Image from 'next/image';
+
+const Header = () => {
+  const { sideBarOpen, setSideBarOpen } = useContext(SideBarContext);
+  const [dropdownOpen, setDropDownOpen] = useState<boolean>(false);
+  const { data: user } = useSession();
+
+  console.log('user image:', user?.user?.image);
+
+  return (
+    <header className='w-full flex items-center justify-between gap-4 py-3 '>
+      <motion.div
+        initial={{ x: -6, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.25 }}
+        className='flex items-center gap-3 '
+      >
+        {sideBarOpen ? (
+          ''
+        ) : (
+          <button
+            onClick={() => setSideBarOpen(!sideBarOpen)}
+            className={` p-2 rounded bg-slate-100 rotate-90 focus:outline-none focus:ring-2 focus:ring-indigo-400`}
+          >
+            {sideBarOpen ? '' : '|||'}
+          </button>
+        )}
+
+        <div className='hidden sm:block'>
+          <h1 className='text-lg font-semibold leading-none'>Mini Dashboard</h1>
+        </div>
+      </motion.div>
+
+      <motion.div
+        initial={{ x: 6, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        className='flex items-center gap-3'
+      >
+        <div className='flex items-center gap-2'>
+          {user?.user ? (
+            <button onClick={() => setDropDownOpen(!dropdownOpen)} className='cursor-pointer'>
+              <span className='flex items-center gap-2 px-3 py-1 rounded-md hover:bg-slate-50 bg-white shadow-sm'>
+                <span className='w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-sm font-medium'>
+                  {user?.user?.image ? (
+                    <Image src={user?.user?.image} alt='user image' width={32} height={32} />
+                  ) : (
+                    '👤'
+                  )}
+                </span>
+                <span className='text-sm'>{user?.user?.name}</span>
+              </span>
+            </button>
+          ) : (
+            <Link href='/login'>Login</Link>
+          )}
+
+          <ul
+            className={`absolute ${
+              dropdownOpen ? 'block' : 'hidden'
+            } top-16 right-5 z-10 min-w-[160px]  rounded-lg border border-slate-200 bg-white p-1.5  focus:outline-none`}
+          >
+            <Link href='/login' onClick={() => signOut()} className='cursor-pointer'>
+              <li
+                role='menuitem'
+                className='cursor-pointer text-red-800 flex w-full text-sm items-center rounded-md p-3 transition-all hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100'
+              >
+                {' ➜]'} Logout
+              </li>
+            </Link>
+          </ul>
+        </div>
+      </motion.div>
+    </header>
+  );
+};
+
+export default Header;
