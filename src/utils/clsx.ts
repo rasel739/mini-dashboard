@@ -1,7 +1,5 @@
-// utils/clsx.ts
-
 type ClassValue = string | undefined | null | false | ClassDictionary | ClassArray;
-type ClassDictionary = { [key: string]: any };
+type ClassDictionary = { [key: string]: string };
 type ClassArray = ClassValue[];
 
 const clsx = (...values: ClassValue[]): string => {
