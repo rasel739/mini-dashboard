@@ -1,8 +1,10 @@
+import { Session } from 'next-auth';
 import { PropsWithChildren } from 'react';
 
-export type SideBarContextType = {
+export type GlobalContextType = {
   sideBarOpen: boolean;
   setSideBarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  session: Session | null;
 };
 
 export type NeonBoxPropsType = PropsWithChildren<{
@@ -41,3 +43,25 @@ export type Post = {
 };
 
 export type ParamsType = { params: { id: string } };
+
+export type InputFieldProps = {
+  id: string;
+  label: string;
+  type?: string;
+  name?: string;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  autoComplete?: string;
+  placeholder?: string;
+};
+
+export type ButtonPropsType = {
+  children?: React.ReactNode;
+  onClick?: () => void;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
+  variant?: 'primary' | 'secondary' | 'outline';
+  icon?: string;
+  ariaLabel?: string;
+  className?: string;
+};

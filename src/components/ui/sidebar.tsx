@@ -4,10 +4,10 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { SIDEBAR_LINK } from '@/constants';
 import { useContext } from 'react';
-import { SideBarContext } from '@/context/sidebar-context';
+import { GlobalContext } from '@/lib/global-provider';
 
 const Sidebar = () => {
-  const { sideBarOpen, setSideBarOpen } = useContext(SideBarContext);
+  const { sideBarOpen, setSideBarOpen } = useContext(GlobalContext);
   return (
     <>
       <aside className='flex'>
