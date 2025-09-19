@@ -40,7 +40,9 @@ export default function Home() {
           {CARD_CONTENT.map((card) => (
             <motion.div key={card.id} variants={itemVariants} layout>
               <NeonBox neonColor={card.color} radius='rounded-2xl' pad={0}>
-                <Card title={card.title}>{card.totalCount}</Card>
+                <Card title={card.title} className='rounded-lg'>
+                  {card.totalCount}
+                </Card>
               </NeonBox>
             </motion.div>
           ))}
