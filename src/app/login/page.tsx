@@ -1,24 +1,9 @@
 'use client';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import Button from '@/components/common/Button';
 import InputField from '@/components/ui/input';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Loading from '../loading';
 
 const Login = () => {
-  const { status } = useSession();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/profile';
-
-  if (status === 'loading') {
-    return <Loading />;
-  }
-  if (status === 'authenticated') {
-    router.replace(callbackUrl);
-    return null;
-  }
-
   return (
     <div className='bg-gray-50 '>
       <div className='flex min-h-screen flex-col justify-center py-12 sm:px-6 lg:px-8'>
