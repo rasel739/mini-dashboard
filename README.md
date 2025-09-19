@@ -108,15 +108,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ---
 
-## 🚀 Deployment
-
-- The project is deployed on **Vercel** (or Netlify/Render depending on submission).
-- Links to be provided in submission:
-  - **GitHub Repo**: `<your-repo-link>`
-  - **Live Demo**: `<your-vercel-link>`
-
----
-
 ## 🔑 Authentication
 
 - **Google Login** with **NextAuth**
