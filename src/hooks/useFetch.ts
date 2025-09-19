@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 const useFetch = <T = unknown | null>(url: string) => {
-  const api_url = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+  const api_url = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
