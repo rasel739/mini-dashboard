@@ -67,7 +67,7 @@ const Sidebar = () => {
           damping: 30,
           mass: 0.8,
         }}
-        className='fixed md:sticky top-0 left-0 h-screen bg-white shadow-xl md:shadow-lg z-50 md:z-30 overflow-hidden flex flex-col'
+        className='fixed md:sticky top-0 left-0 min-h-screen bg-white shadow-xl md:shadow-lg z-50 md:z-30 overflow-hidden flex flex-col'
       >
         <div className='p-3'>
           {isDesktop ? (
@@ -121,12 +121,27 @@ const Sidebar = () => {
                       {item.title}
                     </motion.span>
                   )}
-                  <span className='block md:hidden ml-3'> {item.title}</span>
                 </Link>
               </li>
             ))}
           </ul>
         </nav>
+        <motion.footer>
+          <AnimatePresence mode='wait'>
+            {!desktopCollapsed && (
+              <motion.p
+                key='footer'
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 50 }}
+                transition={{ duration: 0.4 }}
+                className='bg-indigo-600 text-white py-4 text-center'
+              >
+                © mini dashboard {new Date().getFullYear()}
+              </motion.p>
+            )}
+          </AnimatePresence>
+        </motion.footer>
       </motion.aside>
     </>
   );
