@@ -10,14 +10,15 @@ const Users = () => {
   const [selected, setSelected] = useState<User | null>(null);
 
   if (loading) return <Loading />;
-  if (error) return <div className='text-red-600'>Failed to load users: {error}</div>;
 
   return (
     <div>
-      <div className='flex items-center justify-between mb-4'>
+      <div className='flex items-center justify-center mb-4'>
         <h2 className='text-2xl font-bold'>Users</h2>
       </div>
-
+      <div className='text-center mt-10'>
+        <span className='space-x-2'>{error && <div className='text-red-600'>{error}</div>}</span>
+      </div>
       <div className='w-full overflow-x-auto'>
         <table className='min-w-full border-collapse border border-green-800'>
           <thead>

@@ -17,6 +17,12 @@ export const SIDEBAR_LINK = [
     icon: '👥',
     link: '/users',
   },
+  {
+    id: '4',
+    title: 'Todo',
+    icon: '❗',
+    link: '/todo',
+  },
 ];
 
 export const CARD_CONTENT = [

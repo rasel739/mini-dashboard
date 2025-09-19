@@ -42,6 +42,13 @@ export type Post = {
   userId: number;
 };
 
+export type TodoType = {
+  userId: number;
+  id: number;
+  title: string;
+  completed: boolean;
+};
+
 export type ParamsType = { params: { id: string } };
 
 export type InputFieldProps = {
