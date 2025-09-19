@@ -5,13 +5,12 @@ import { useContext, useState } from 'react';
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { GlobalContext } from '@/lib/global-provider';
+import Button from '../common/Button';
 
 const Header = () => {
   const { sideBarOpen, setSideBarOpen } = useContext(GlobalContext);
   const [dropdownOpen, setDropDownOpen] = useState<boolean>(false);
   const { data: user } = useSession();
-
-  console.log('user image:', user?.user?.image);
 
   return (
     <header className='w-full flex items-center justify-between gap-4 py-3 '>
@@ -24,12 +23,9 @@ const Header = () => {
         {sideBarOpen ? (
           ''
         ) : (
-          <button
-            onClick={() => setSideBarOpen(!sideBarOpen)}
-            className={` p-2 rounded bg-slate-100 rotate-90 focus:outline-none focus:ring-2 focus:ring-indigo-400`}
-          >
-            {sideBarOpen ? '' : '|||'}
-          </button>
+          <Button variant='primary' onClick={() => setSideBarOpen(!sideBarOpen)}>
+            {sideBarOpen ? '' : '☰'}
+          </Button>
         )}
 
         <div className='hidden sm:block'>
@@ -58,7 +54,11 @@ const Header = () => {
               </span>
             </button>
           ) : (
-            <Link href='/login'>Login</Link>
+            <Link href='/login'>
+              <Button type='button' variant='primary'>
+                Login
+              </Button>
+            </Link>
           )}
 
           <ul

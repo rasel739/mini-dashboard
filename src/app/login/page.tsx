@@ -47,7 +47,7 @@ const Login = () => {
 
               <div className='flex justify-center items-center'>
                 <Button type='submit' variant='primary' disabled={true}>
-                  Sign In
+                  Login
                 </Button>
               </div>
             </form>

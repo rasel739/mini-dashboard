@@ -4,11 +4,12 @@ import { motion } from 'framer-motion';
 import useFetch from '@/hooks/useFetch';
 import Card from '@/components/ui/card';
 import { Post } from '@/types';
+import Loading from '@/app/loading';
 
 export default function PostsPage() {
   const { data, loading, error } = useFetch<Post[]>('/posts');
 
-  if (loading) return <div>Loading posts...</div>;
+  if (loading) return <Loading />;
   if (error) return <div className='text-red-600'>Failed to load posts: {error}</div>;
 
   return (
