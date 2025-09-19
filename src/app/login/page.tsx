@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Loading from '../loading';
 import Button from '@/components/common/Button';
 import InputField from '@/components/ui/input';
-import { useEffect } from 'react';
 
 const Login = () => {
   const { data: session, status } = useSession();
@@ -13,14 +12,13 @@ const Login = () => {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/profile';
 
-  useEffect(() => {
-    if (status === 'authenticated' && session) {
-      router.replace(callbackUrl);
-    }
-  }, [status, session, callbackUrl, router]);
-
-  if (status === 'loading') return <Loading />;
-
+  if (status === 'loading') {
+    return <Loading />;
+  }
+  if (session) {
+    router.replace(callbackUrl);
+    return null;
+  }
   return (
     <div className='bg-gray-50 '>
       <div className='flex min-h-screen flex-col justify-center py-12 sm:px-6 lg:px-8'>

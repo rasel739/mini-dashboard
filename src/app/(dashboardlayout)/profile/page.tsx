@@ -1,7 +1,11 @@
 import UserProfile from '@/components/ui/profile';
 
 const Profile = () => {
-  return <UserProfile />;
+  return (
+    <div>
+      <UserProfile />
+    </div>
+  );
 };
 
 export default Profile;
