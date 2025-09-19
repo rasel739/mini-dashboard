@@ -74,7 +74,7 @@ const Header = () => {
                 {'🪪'} Profile
               </li>
             </Link>
-            <Link href='/login' onClick={() => signOut()} className='cursor-pointer'>
+            <Link href='/' onClick={() => signOut({ redirectTo: '/' })} className='cursor-pointer'>
               <li
                 role='menuitem'
                 className='cursor-pointer text-red-800 flex w-full text-sm items-center rounded-md p-3 transition-all hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100'

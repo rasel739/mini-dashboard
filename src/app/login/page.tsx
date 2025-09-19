@@ -1,13 +1,12 @@
 'use client';
 import { signIn, useSession } from 'next-auth/react';
-import { useRouter, useSearchParams } from 'next/navigation';
-
-import Loading from '../loading';
 import Button from '@/components/common/Button';
 import InputField from '@/components/ui/input';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Loading from '../loading';
 
 const Login = () => {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/profile';
@@ -15,10 +14,11 @@ const Login = () => {
   if (status === 'loading') {
     return <Loading />;
   }
-  if (session) {
+  if (status === 'authenticated') {
     router.replace(callbackUrl);
     return null;
   }
+
   return (
     <div className='bg-gray-50 '>
       <div className='flex min-h-screen flex-col justify-center py-12 sm:px-6 lg:px-8'>
@@ -62,7 +62,7 @@ const Login = () => {
                 <Button
                   className='hover:bg-slate-800'
                   onClick={() => {
-                    signIn('google', { callbackUrl });
+                    signIn('google', { redirectTo: '/profile' });
                   }}
                   variant='outline'
                   icon='/img/google.png'
