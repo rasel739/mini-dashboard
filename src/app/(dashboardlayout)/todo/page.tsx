@@ -1,20 +1,19 @@
 'use client';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import useFetch from '@/hooks/useFetch';
-import Card from '@/components/ui/card';
-import { Post } from '@/types';
 import Loading from '@/app/loading';
+import Card from '@/components/ui/card';
+import useFetch from '@/hooks/useFetch';
+import { TodoType } from '@/types';
+import { motion } from 'framer-motion';
 
-export default function PostsPage() {
-  const { data, loading, error } = useFetch<Post[]>('/posts');
+const Todo = () => {
+  const { data, loading, error } = useFetch<TodoType[]>('/todosss');
 
   if (loading) return <Loading />;
 
   return (
     <div>
       <div className='flex items-center justify-center mb-4'>
-        <h2 className='text-2xl font-bold'>Posts</h2>
+        <h2 className='text-2xl font-bold'>Todo List</h2>
       </div>
       <div className='text-center mt-10'>
         <span className='space-x-2'>{error && <div className='text-red-600'>{error}</div>}</span>
@@ -28,19 +27,17 @@ export default function PostsPage() {
         }}
         className='grid grid-cols-1 md:grid-cols-2 gap-4'
       >
-        {data?.slice(0, 12).map((post) => (
+        {data?.slice(0, 12).map((todo) => (
           <motion.div
-            key={post.id}
+            key={todo.id}
             variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
           >
-            <Link href={`/posts/${post.id}`}>
-              <Card title={post.title}>
-                <p className='text-sm line-clamp-3'>{post.body}</p>
-              </Card>
-            </Link>
+            <Card title={todo.title} />
           </motion.div>
         ))}
       </motion.div>
     </div>
   );
-}
+};
+
+export default Todo;

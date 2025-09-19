@@ -15,7 +15,8 @@ const useFetch = <T = unknown | null>(url: string) => {
 
     try {
       const res = await fetch(`${api_url}/${url}`);
-      if (!res.ok) throw new Error('Data not found!');
+      if (!res.ok)
+        throw new Error('Failed to fetch data: API endpoint may be incorrect or unavailable.');
       const result: T = await res.json();
       setData(result);
     } catch (error: unknown) {
