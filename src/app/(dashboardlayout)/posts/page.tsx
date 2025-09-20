@@ -4,13 +4,13 @@ import { motion } from 'framer-motion';
 import useFetch from '@/hooks/useFetch';
 import Card from '@/components/ui/card';
 import { Post } from '@/types';
-import Loading from '@/app/loading';
 import Button from '@/components/common/Button';
+import Spinner from '@/components/common/Spinner';
 
 export default function PostsPage() {
   const { data, loading, error } = useFetch<Post[]>('/posts');
 
-  if (loading) return <Loading />;
+  if (loading) return <Spinner />;
 
   return (
     <div>
