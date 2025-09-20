@@ -1,3 +1,4 @@
+// middleware.ts
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
@@ -7,16 +8,24 @@ const secret = process.env.NEXTAUTH_SECRET;
 const protectedRoutes = ['/profile'];
 const publicRoutes = ['/login', '/'];
 
-export async function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
+function isPublic(pathname: string) {
+  return publicRoutes.some((route) =>
+    route === '/' ? pathname === '/' : pathname.startsWith(route)
+  );
+}
 
-  if (publicRoutes.some((route) => pathname.startsWith(route))) {
+function isProtected(pathname: string) {
+  return protectedRoutes.some((route) => pathname.startsWith(route));
+}
+
+export async function middleware(req: NextRequest) {
+  const { pathname, search } = req.nextUrl;
+
+  if (isPublic(pathname)) {
     return NextResponse.next();
   }
 
-  const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route));
-
-  if (!isProtectedRoute) {
+  if (!isProtected(pathname)) {
     return NextResponse.next();
   }
 
@@ -25,7 +34,7 @@ export async function middleware(req: NextRequest) {
 
     if (!token) {
       const loginUrl = new URL('/login', req.url);
-      const fullCallbackUrl = req.nextUrl.pathname + req.nextUrl.search;
+      const fullCallbackUrl = pathname + search;
       loginUrl.searchParams.set('callbackUrl', fullCallbackUrl);
       return NextResponse.redirect(loginUrl);
     }

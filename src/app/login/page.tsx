@@ -3,8 +3,8 @@ import { signIn, useSession } from 'next-auth/react';
 import Button from '@/components/common/Button';
 import InputField from '@/components/ui/input';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Loading from '../loading';
 import { useEffect } from 'react';
+import Spinner from '@/components/common/Spinner';
 
 const Login = () => {
   const { status } = useSession();
@@ -19,10 +19,10 @@ const Login = () => {
   }, [status, callbackUrl, router]);
 
   if (status === 'loading') {
-    return <Loading />;
+    return <Spinner />;
   }
   if (status === 'authenticated') {
-    return <Loading />;
+    return <Spinner />;
   }
 
   return (

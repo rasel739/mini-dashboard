@@ -1,5 +1,5 @@
 'use client';
-import Loading from '@/app/loading';
+import Spinner from '@/components/common/Spinner';
 import Modal from '@/components/ui/modal';
 import useFetch from '@/hooks/useFetch';
 import { User } from '@/types';
@@ -10,7 +10,7 @@ const Users = () => {
   const { data, loading, error } = useFetch<User[]>('/users');
   const [selected, setSelected] = useState<User | null>(null);
 
-  if (loading) return <Loading />;
+  if (loading) return <Spinner />;
 
   return (
     <div>

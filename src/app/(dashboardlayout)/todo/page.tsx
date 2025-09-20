@@ -1,5 +1,5 @@
 'use client';
-import Loading from '@/app/loading';
+import Spinner from '@/components/common/Spinner';
 import Card from '@/components/ui/card';
 import useFetch from '@/hooks/useFetch';
 import { TodoType } from '@/types';
@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 const Todo = () => {
   const { data, loading, error } = useFetch<TodoType[]>('/todosss');
 
-  if (loading) return <Loading />;
+  if (loading) return <Spinner />;
 
   return (
     <div>
