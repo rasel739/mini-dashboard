@@ -1,61 +1,32 @@
-import { NextResponse } from 'next/server';
+import NextAuth from 'next-auth';
 import type { NextRequest } from 'next/server';
-import { getToken } from 'next-auth/jwt';
+import { NextResponse } from 'next/server';
+import { authConfig } from './app/auth.config';
 
-const secret = process.env.NEXTAUTH_SECRET;
+const { auth } = NextAuth(authConfig);
 
-const protectedRoutes = ['/profile'];
-const publicRoutes = ['/login', '/', '/api/auth'];
-
-function isPublic(pathname: string) {
-  return publicRoutes.some((route) => {
-    if (route === '/') {
-      return pathname === '/';
-    }
-    return pathname.startsWith(route);
-  });
-}
-
-function isProtected(pathname: string) {
-  return protectedRoutes.some((route) => pathname.startsWith(route));
-}
-
-export async function middleware(req: NextRequest) {
+export default auth(async function middleware(req: NextRequest) {
   const { pathname, search } = req.nextUrl;
 
-  if (isPublic(pathname)) {
+  const publicRoutes = ['/', '/login', '/api/auth'];
+  if (publicRoutes.some((r) => (r === '/' ? pathname === '/' : pathname.startsWith(r)))) {
     return NextResponse.next();
   }
 
-  if (!isProtected(pathname)) {
-    return NextResponse.next();
-  }
+  const token = await auth();
 
-  try {
-    const token = await getToken({
-      req,
-      secret,
-      secureCookie: process.env.NODE_ENV === 'production',
-    });
-
-    if (!token) {
+  if (pathname.startsWith('/profile')) {
+    if (!token?.user) {
       const loginUrl = new URL('/login', req.url);
-      const fullCallbackUrl = pathname + search;
-      loginUrl.searchParams.set('callbackUrl', fullCallbackUrl);
+      loginUrl.searchParams.set('callbackUrl', pathname + search);
       return NextResponse.redirect(loginUrl);
     }
-
     return NextResponse.next();
-  } catch (error) {
-    console.error('Middleware error:', error);
-    const loginUrl = new URL('/login', req.url);
-    loginUrl.searchParams.set('callbackUrl', pathname + search);
-    return NextResponse.redirect(loginUrl);
   }
-}
+
+  return NextResponse.next();
+});
 
 export const config = {
-  matcher: [
-    '/((?!api/auth|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
-  ],
+  matcher: ['/profile/:path*', '/login'],
 };
