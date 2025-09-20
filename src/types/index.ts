@@ -1,10 +1,8 @@
-import { Session } from 'next-auth';
 import { PropsWithChildren } from 'react';
 
 export type GlobalContextType = {
   sideBarOpen: boolean;
   setSideBarOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  session: Session | null;
 };
 
 export type NeonBoxPropsType = PropsWithChildren<{
