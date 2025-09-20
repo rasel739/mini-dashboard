@@ -2,12 +2,12 @@ import Image from 'next/image';
 
 const Loading = () => {
   return (
-    <div className='flex justify-center items-center h-screen'>
+    <div className='flex justify-center items-center h-screen' suppressHydrationWarning>
       <Image
         className='animate-spin'
-        src='https://www.svgrepo.com/show/474682/loading.svg'
-        width={80}
-        height={80}
+        src='/img/spinner.png'
+        width={100}
+        height={100}
         alt='Loading icon'
       ></Image>
     </div>
