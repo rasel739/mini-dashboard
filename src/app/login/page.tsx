@@ -2,30 +2,21 @@
 import { signIn, useSession } from 'next-auth/react';
 import Button from '@/components/common/Button';
 import InputField from '@/components/ui/input';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import Spinner from '@/components/common/Spinner';
 
 const Login = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/profile';
-  const [isRedirecting, setIsRedirecting] = useState(false);
 
   useEffect(() => {
     if (status === 'authenticated' && session) {
-      setIsRedirecting(true);
-
-      router.replace(callbackUrl);
+      router.replace('/profile');
     }
-  }, [status, session, callbackUrl, router]);
+  }, [status, session, router]);
 
-  if (status === 'loading' || isRedirecting) {
-    return <Spinner />;
-  }
-
-  if (status === 'authenticated') {
+  if (status === 'loading' || status === 'authenticated') {
     return <Spinner />;
   }
 
@@ -72,7 +63,7 @@ const Login = () => {
                 <Button
                   className='hover:bg-slate-800'
                   onClick={() => {
-                    signIn('google', { callbackUrl, redirect: true });
+                    signIn('google', { redirectTo: '/profile' });
                   }}
                   variant='outline'
                   icon='/img/google.png'
