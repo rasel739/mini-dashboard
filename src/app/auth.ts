@@ -1,21 +1,23 @@
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
+import { authConfig } from './auth.config';
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+export const { auth, handlers, signIn, signOut } = NextAuth({
+  debug: process.env.NODE_ENV !== 'production',
+
+  session: { strategy: 'jwt' },
+
+  ...authConfig,
+
   providers: [
     Google({
-      clientId: process.env.AUTH_WEBAPP_GOOGLE_CLIENT_ID,
-      clientSecret: process.env.AUTH_WEBAPP_GOOGLE_CLIENT_SECRET,
+      clientId: process.env.AUTH_WEBAPP_GOOGLE_CLIENT_ID ?? '',
+      clientSecret: process.env.AUTH_WEBAPP_GOOGLE_CLIENT_SECRET ?? '',
       async profile(profile) {
         return { ...profile };
       },
     }),
   ],
-  session: {
-    strategy: 'jwt',
-  },
-  secret: process.env.NEXTAUTH_SECRET,
-  pages: {
-    signIn: '/login',
-  },
+
+  secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
 });
