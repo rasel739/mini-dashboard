@@ -3,24 +3,31 @@ import { signIn, useSession } from 'next-auth/react';
 import Button from '@/components/common/Button';
 import InputField from '@/components/ui/input';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Spinner from '@/components/common/Spinner';
 
 const Login = () => {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackPath = searchParams.get('callbackUrl') || '/profile';
+  const callbackUrl = searchParams.get('callbackUrl') || '/profile';
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   useEffect(() => {
-    if (status === 'authenticated') {
-      router.replace(callbackPath);
+    if (status === 'authenticated' && session) {
+      setIsRedirecting(true);
+
+      router.replace(callbackUrl);
     }
-  }, [status, callbackPath, router]);
+  }, [status, session, callbackUrl, router]);
 
-  if (status === 'loading') return <Spinner />;
+  if (status === 'loading' || isRedirecting) {
+    return <Spinner />;
+  }
 
-  if (status === 'authenticated') return null;
+  if (status === 'authenticated') {
+    return <Spinner />;
+  }
 
   return (
     <div className='bg-gray-50 '>
@@ -65,7 +72,7 @@ const Login = () => {
                 <Button
                   className='hover:bg-slate-800'
                   onClick={() => {
-                    signIn('google', { callbackUrl: callbackPath });
+                    signIn('google', { callbackUrl, redirect: true });
                   }}
                   variant='outline'
                   icon='/img/google.png'
