@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'Mini Dashboard',
-  description: 'This porject is actualy interview task',
+  description: 'This is a mini dashboard application built with Next.js and NextAuth.js',
 };
 
 export default function RootLayout({

@@ -1,10 +1,9 @@
 'use client';
-import { GlobalContext } from '@/lib/global-provider';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import React, { useContext } from 'react';
 
 const UserProfile = () => {
-  const { session } = useContext(GlobalContext);
+  const { data: session } = useSession();
 
   return (
     <div className='max-w-2xl mx-4 sm:max-w-sm md:max-w-sm lg:max-w-sm xl:max-w-sm sm:mx-auto md:mx-auto lg:mx-auto xl:mx-auto mt-16 bg-white shadow-xl rounded-lg text-gray-900'>

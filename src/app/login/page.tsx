@@ -10,20 +10,17 @@ const Login = () => {
   const { status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/profile';
+  const callbackPath = searchParams.get('callbackUrl') || '/profile';
 
   useEffect(() => {
     if (status === 'authenticated') {
-      router.replace(callbackUrl);
+      router.replace(callbackPath);
     }
-  }, [status, callbackUrl, router]);
+  }, [status, callbackPath, router]);
 
-  if (status === 'loading') {
-    return <Spinner />;
-  }
-  if (status === 'authenticated') {
-    return <Spinner />;
-  }
+  if (status === 'loading') return <Spinner />;
+
+  if (status === 'authenticated') return null;
 
   return (
     <div className='bg-gray-50 '>
@@ -68,7 +65,7 @@ const Login = () => {
                 <Button
                   className='hover:bg-slate-800'
                   onClick={() => {
-                    signIn('google', { callbackUrl });
+                    signIn('google', { callbackUrl: callbackPath });
                   }}
                   variant='outline'
                   icon='/img/google.png'
