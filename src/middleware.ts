@@ -5,6 +5,16 @@ import { getToken } from 'next-auth/jwt';
 const secret = process.env.NEXTAUTH_SECRET;
 
 const protectedRoutes = ['/profile'];
+const publicRoutes = ['/login', '/', '/api/auth'];
+
+function isPublic(pathname: string) {
+  return publicRoutes.some((route) => {
+    if (route === '/') {
+      return pathname === '/';
+    }
+    return pathname.startsWith(route);
+  });
+}
 
 function isProtected(pathname: string) {
   return protectedRoutes.some((route) => pathname.startsWith(route));
@@ -13,12 +23,20 @@ function isProtected(pathname: string) {
 export async function middleware(req: NextRequest) {
   const { pathname, search } = req.nextUrl;
 
+  if (isPublic(pathname)) {
+    return NextResponse.next();
+  }
+
   if (!isProtected(pathname)) {
     return NextResponse.next();
   }
 
   try {
-    const token = await getToken({ req, secret });
+    const token = await getToken({
+      req,
+      secret,
+      secureCookie: process.env.NODE_ENV === 'production',
+    });
 
     if (!token) {
       const loginUrl = new URL('/login', req.url);
@@ -37,5 +55,7 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/profile'],
+  matcher: [
+    '/((?!api/auth|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
 };
